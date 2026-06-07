@@ -1,0 +1,9 @@
+# Raw Thunderbird mailbox — contains personal email data
+Junk
+
+# Temp files written by editors / Claude Code
+*.tmp.*
+
+# OS
+.DS_Store
+Thumbs.db
