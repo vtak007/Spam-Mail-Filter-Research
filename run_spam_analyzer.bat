@@ -1,14 +1,37 @@
 @echo off
 setlocal
 
-set PROFILE=C:\Users\Perdi\AppData\Roaming\Thunderbird\Profiles\7cbaki9u.default-release
-set ACCOUNT=ImapMail\outlook.office365.com
 set PROJECT=D:\Dropbox\Computing1\BatchFiles_Scripts\Claude Projects\Spam Mail Filter Research
+cd /d "%PROJECT%"
 
 echo ============================================================
 echo  Spam Origin Analyzer - Automated Run
 echo ============================================================
 echo.
+
+if not exist "local_settings.py" (
+    echo ERROR: local_settings.py not found.
+    echo Copy local_settings.example.py to local_settings.py and fill in your values.
+    echo.
+    pause
+    exit /b 1
+)
+
+for /f "delims=" %%i in ('python -c "import local_settings; print(local_settings.PROFILE)"') do set PROFILE=%%i
+for /f "delims=" %%i in ('python -c "import local_settings; print(local_settings.ACCOUNT)"') do set ACCOUNT=%%i
+
+if not defined PROFILE (
+    echo ERROR: Failed to read PROFILE from local_settings.py.
+    echo.
+    pause
+    exit /b 1
+)
+if not defined ACCOUNT (
+    echo ERROR: Failed to read ACCOUNT from local_settings.py.
+    echo.
+    pause
+    exit /b 1
+)
 
 echo [1/4] Checking if Thunderbird is running...
 tasklist /fi "imagename eq thunderbird.exe" 2>nul | find /i "thunderbird.exe" >nul
@@ -38,7 +61,6 @@ echo.
 
 echo [3/4] Running spam analyzer...
 echo.
-cd /d "%PROJECT%"
 python spam_analyzer.py
 if errorlevel 1 (
     echo.
