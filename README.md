@@ -38,7 +38,7 @@ TRASH_URI = 'imap://youraddress%40example.com@your.mail.server.com/Deleted'
 
 To find your profile path in Thunderbird: **Help → Troubleshooting Information → Profile Folder → Open Folder**.
 
-The `_ACCOUNT` subfolder is named after your incoming mail server. Look inside `ImapMail\` (for IMAP accounts) or `Mail\` (for POP3 accounts) inside your profile folder.
+The `ACCOUNT` subfolder is named after your incoming mail server. Look inside `ImapMail\` (for IMAP accounts) or `Mail\` (for POP3 accounts) inside your profile folder.
 
 You can also adjust this threshold (default 5) to control how many rules are generated:
 
