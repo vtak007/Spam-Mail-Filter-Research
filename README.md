@@ -178,6 +178,8 @@ The script generates `msgFilterRules.dat` containing rules for all clusters with
 
 The batch file (`run_spam_analyzer.bat`) installs the file automatically. It also preserves any filter rules you have created manually in Thunderbird — only rules whose name begins with `Spam - ` are replaced on each run.
 
+Each run fully regenerates the `Spam - ` rule set from whatever is currently in your Junk mailbox — it does not add to what's already installed. Rule counts will rise and fall with how much spam has accumulated since the last run. Avoid emptying the Junk folder immediately before running the analyzer, since clustering needs enough volume (multiple emails from multiple senders sharing an origin) to generate a rule.
+
 **To install manually:**
 
 1. Close Thunderbird completely

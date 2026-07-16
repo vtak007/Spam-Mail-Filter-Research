@@ -309,25 +309,28 @@ def _read_preserved_rules():
             content = f.read()
     except Exception:
         return []
+    # Split into per-rule blocks using 'name=' as the boundary rather than
+    # blank lines: Thunderbird sometimes rewrites the .dat without blank
+    # lines between filters, which previously caused many rules to be
+    # lumped into a single block and preserved/discarded together.
     blocks, current = [], []
     for line in content.splitlines():
         if line.startswith('version=') or line.startswith('logging='):
             continue
         if line == '':
+            continue
+        if line.startswith('name='):
             if current:
                 blocks.append(current)
-                current = []
-        else:
+            current = [line]
+        elif current:
             current.append(line)
     if current:
         blocks.append(current)
     preserved = []
     for block in blocks:
-        for line in block:
-            if line.startswith('name='):
-                if not line[6:-1].startswith('Spam - '):
-                    preserved.append(block)
-                break
+        if not block[0][6:-1].startswith('Spam - '):
+            preserved.append(block)
     return preserved
 
 
