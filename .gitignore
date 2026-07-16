@@ -1,9 +1,19 @@
 # Raw Thunderbird mailbox — contains personal email data
 Junk
 
+# Personal profile/account settings — contains real email address
+local_settings.py
+
+# Generated output — regenerated fresh from Junk on each run
+msgFilterRules.dat
+thunderbird_rules.txt
+
 # Temp files written by editors / Claude Code
 *.tmp.*
 
 # OS
 .DS_Store
 Thumbs.db
+
+# Python
+__pycache__/

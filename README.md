@@ -26,15 +26,15 @@ A second class of spam doesn't bother rotating infrastructure but does rotate em
 
 ## One-Time Configuration
 
-Before the first run, open `spam_analyzer.py` in a text editor and update these three constants near the top of the file to match your Thunderbird setup:
+Before the first run, copy `local_settings.example.py` to `local_settings.py` (which is gitignored and never committed) and fill in these three values to match your Thunderbird setup:
 
 ```python
-_PROFILE = r'C:\Users\YourName\AppData\Roaming\Thunderbird\Profiles\xxxxxxxx.default-release'
-_ACCOUNT = r'ImapMail\your.mail.server.com'
-_TRASH_URI = 'imap://youraddress%40example.com@your.mail.server.com/Deleted'
+PROFILE = r'C:\Users\YourName\AppData\Roaming\Thunderbird\Profiles\xxxxxxxx.default-release'
+ACCOUNT = r'ImapMail\your.mail.server.com'
+TRASH_URI = 'imap://youraddress%40example.com@your.mail.server.com/Deleted'
 ```
 
-`_TRASH_URI` must be an **IMAP folder URI**, not a local mailbox path. For most Outlook/Hotmail accounts the trash folder is named `Deleted` on the server (displayed as "Trash" in Thunderbird's UI). For Gmail accounts it is `[Gmail]/Trash`. To find the exact URI: in Thunderbird open **Tools → Message Filters**, create a temporary filter with action "Move to folder", select your Trash folder, save it, close Thunderbird, and inspect the `actionValue=` line in your account's `msgFilterRules.dat`.
+`TRASH_URI` must be an **IMAP folder URI**, not a local mailbox path. For most Outlook/Hotmail accounts the trash folder is named `Deleted` on the server (displayed as "Trash" in Thunderbird's UI). For Gmail accounts it is `[Gmail]/Trash`. To find the exact URI: in Thunderbird open **Tools → Message Filters**, create a temporary filter with action "Move to folder", select your Trash folder, save it, close Thunderbird, and inspect the `actionValue=` line in your account's `msgFilterRules.dat`.
 
 To find your profile path in Thunderbird: **Help → Troubleshooting Information → Profile Folder → Open Folder**.
 
@@ -177,6 +177,8 @@ All clusters are sorted by email count (largest first). Generic header values (`
 The script generates `msgFilterRules.dat` containing rules for all clusters with 5 or more emails.
 
 The batch file (`run_spam_analyzer.bat`) installs the file automatically. It also preserves any filter rules you have created manually in Thunderbird — only rules whose name begins with `Spam - ` are replaced on each run.
+
+Each run fully regenerates the `Spam - ` rule set from whatever is currently in your Junk mailbox — it does not add to what's already installed. Rule counts will rise and fall with how much spam has accumulated since the last run. Avoid emptying the Junk folder immediately before running the analyzer, since clustering needs enough volume (multiple emails from multiple senders sharing an origin) to generate a rule.
 
 **To install manually:**
 
